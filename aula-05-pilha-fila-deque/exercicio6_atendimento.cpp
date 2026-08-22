@@ -1,73 +1,84 @@
-// ============================================================
-// Exercicio 6 - Atendimento prioritario
-// Estrutura de Dados - IFSP Campus Campos do Jordao
-// ============================================================
-//
-// Clientes prioritarios passam a frente dos comuns, mas dentro
-// de cada grupo a ordem de chegada e respeitada.
-//
-// O deque tem as duas pontas abertas, entao resolve o problema.
-// Uma fila comum nao resolveria, porque nela so se entra pelo
-// fim.
-//
-// Ordem de chegada:
-//   Ana, comum
-//   Bruno, comum
-//   Carla, prioritaria
-//   Diego, comum
-//   Elena, prioritaria
-//
-// Saida esperada:
-// Atendendo: Elena
-// Atendendo: Carla
-// Atendendo: Ana
-// Atendendo: Bruno
-// Atendendo: Diego
-//
-// ============================================================
-
 #include <iostream>
 #include <deque>
 #include <string>
+
 using namespace std;
 
 int main() {
-
     deque<string> atendimento;
+    int opcao;
+    string nome;
 
-    // --------------------------------------------------------
-    // PASSO 1
-    // Insira os clientes na ordem de chegada listada acima.
-    //
-    // Cliente comum entra no fim:          push_back
-    // Cliente prioritario entra na frente: push_front
-    //
-    // Faca uma linha para cada cliente, na ordem de chegada.
-    // --------------------------------------------------------
-
-    // escreva aqui
+    // Valores iniciais do seu teste para o sistema já começar preenchido
     atendimento.push_back("Ana");
     atendimento.push_back("Bruno");
     atendimento.push_front("Carla");
     atendimento.push_back("Diego");
     atendimento.push_front("Elena");
 
-    // --------------------------------------------------------
-    // PASSO 2
-    // Atenda todos os clientes.
-    //
-    // Repita enquanto o deque nao estiver vazio, usando empty.
-    // Dentro do laco:
-    //   1. imprima "Atendendo: " seguido do nome que esta na
-    //      frente, lido com front
-    //   2. remova quem foi atendido, com pop_front
-    // --------------------------------------------------------
+    do {
+        // Exibição do Menu
+        cout << "\n===============================" << endl;
+        cout << "    SISTEMA DE ATENDIMENTO     " << endl;
+        cout << "===============================" << endl;
+        cout << "1. Inserir Cliente Comum" << endl;
+        cout << "2. Inserir Cliente Prioritario" << endl;
+        cout << "3. Atender Proximo Cliente" << endl;
+        cout << "4. Mostrar Fila Atual" << endl;
+        cout << "0. Sair" << endl;
+        cout << "===============================" << endl;
+        cout << "Escolha uma opcao: ";
+        cin >> opcao;
 
-    // escreva aqui
-    while(!atendimento.empty()) {
-        cout << "Atendendo: " << atendimento.front() << endl;
-        atendimento.pop_front();
-    }
+        // Limpa o buffer do teclado para evitar problemas com o getline
+        cin.ignore(); 
+
+        switch (opcao) {
+            case 1:
+                cout << "Digite o nome do cliente comum: ";
+                getline(cin, nome);
+                atendimento.push_back(nome); // Entra no fim da fila
+                cout << nome << " adicionado(a) no fim da fila." << endl;
+                break;
+
+            case 2:
+                cout << "Digite o nome do cliente prioritario: ";
+                getline(cin, nome);
+                atendimento.push_front(nome); // Passa na frente da fila
+                cout << nome << " adicionado(a) na frente da fila." << endl;
+                break;
+
+            case 3:
+                if (!atendimento.empty()) {
+                    cout << "Atendendo: " << atendimento.front() << endl;
+                    atendimento.pop_front(); // Remove o primeiro da fila
+                } else {
+                    cout << "Nenhum cliente na fila de espera." << endl;
+                }
+                break;
+
+            case 4:
+                if (!atendimento.empty()) {
+                    cout << "Fila atual: ";
+                    for (const string& cliente : atendimento) {
+                        cout << "[" << cliente << "] ";
+                    }
+                    cout << endl;
+                } else {
+                    cout << "A fila esta vazia." << endl;
+                }
+                break;
+
+            case 0:
+                cout << "Encerrando o sistema..." << endl;
+                break;
+
+            default:
+                cout << "Opcao invalida! Tente novamente." << endl;
+                break;
+        }
+
+    } while (opcao != 0);
 
     return 0;
 }
